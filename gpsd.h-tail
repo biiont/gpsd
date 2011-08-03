@@ -336,7 +336,8 @@ typedef enum {source_unknown,
 typedef enum {service_unknown,
 	      service_sensor,
 	      service_dgpsip,
-	      service_ntrip
+	      service_ntrip,
+	      service_udp
 } servicetype_t;
 
 /*

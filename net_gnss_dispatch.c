@@ -17,13 +17,15 @@
 
 #define NETGNSS_DGPSIP	"dgpsip://"
 #define NETGNSS_NTRIP	"ntrip://"
+#define NETGNSS_UDP  	"udp://"
 
 bool netgnss_uri_check(char *name)
 /* is given string a valid URI for GNSS/DGPS service? */
 {
     return
 	strncmp(name, NETGNSS_NTRIP, strlen(NETGNSS_NTRIP)) == 0
-	|| strncmp(name, NETGNSS_DGPSIP, strlen(NETGNSS_DGPSIP)) == 0;
+	|| strncmp(name, NETGNSS_DGPSIP, strlen(NETGNSS_DGPSIP)) == 0
+	|| strncmp(name, NETGNSS_UDP, strlen(NETGNSS_UDP)) == 0;
 }
 
 
@@ -40,6 +42,9 @@ int netgnss_uri_open(struct gps_device_t *dev, char *netgnss_service)
 
     if (strncmp(netgnss_service, NETGNSS_DGPSIP, strlen(NETGNSS_DGPSIP)) == 0)
 	return dgpsip_open(dev, netgnss_service + strlen(NETGNSS_DGPSIP));
+
+    if (strncmp(netgnss_service, NETGNSS_UDP, strlen(NETGNSS_UDP)) == 0)
+	return udp_open(dev, netgnss_service + strlen(NETGNSS_UDP));
 
 #ifndef REQUIRE_DGNSS_PROTO
     return dgpsip_open(dev, netgnss_service);
@@ -62,6 +67,8 @@ void netgnss_report(struct gps_context_t *context,
     else if (dgnss->servicetype == service_ntrip)
 	ntrip_report(context, gps, dgnss);
 #endif
+    else if (dgnss->servicetype == service_udp)
+	udp_report(context, gps, dgnss);
 }
 
 /* end */

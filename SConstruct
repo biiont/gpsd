@@ -48,6 +48,7 @@ systemd = os.path.exists("/usr/share/systemd/system")
 boolopts = (
     # GPS protocols
     ("nmea",          True,  "NMEA support"),
+    ("nmea_checksum", True,  "Verify NMEA checksum"),
     ("ashtech",       True,  "Ashtech support"),
     ("earthmate",     True,  "DeLorme EarthMate Zodiac support"),
     ("evermore",      True,  "EverMore binary support"),
@@ -522,6 +523,7 @@ libgpsd_sources = [
     "net_dgpsip.c",
     "net_gnss_dispatch.c",
     "net_ntrip.c",
+    "net_udp.c",
     "packet.c",
     "pseudonmea.c",
     "serial.c",

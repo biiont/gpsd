@@ -1398,6 +1398,7 @@ void packet_parse(struct gps_packet_t *lexer)
 		    checksum_ok = (csum[0] == toupper(end[1])
 				   && csum[1] == toupper(end[2]));
 		}
+#ifdef NMEA_CHECKSUM_ENABLE
 		if (!checksum_ok) {
 		    gpsd_report(LOG_WARN,
 				"bad checksum in NMEA packet; expected %s.\n",
@@ -1407,6 +1408,7 @@ void packet_parse(struct gps_packet_t *lexer)
 		    packet_discard(lexer);
 		    break;    /* exit case */
 		}
+#endif /* NMEA_CHECKSUM_ENABLE */
 	    }
 	    /* checksum passed or not present */
 #ifdef AIVDM_ENABLE
