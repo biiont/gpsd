@@ -180,6 +180,7 @@ libgpsd_c_sources = \
 	net_dgpsip.c \
 	net_gnss_dispatch.c \
 	net_ntrip.c \
+	net_udp.c \
 	ntpshm.c \
 	packet.c \
 	pseudonmea.c \

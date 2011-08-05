@@ -298,6 +298,7 @@ static void usage(void)
 A device may be a local serial device for GPS input, or a URL of the form:\n\
      {dgpsip|ntrip}://[user:passwd@]host[:port][/stream]\n\
      gpsd://host[:port][/device][?protocol]\n\
+     udp://port - catch broadcast UDP packets with plain NMEA inside\n\
 in which case it specifies an input source for GPSD, DGPS or ntrip data.\n\
 \n\
 The following driver types are compiled into this gpsd instance:\n",

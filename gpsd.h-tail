@@ -170,7 +170,7 @@ struct gps_context_t {
 #define LEAP_SECOND_VALID	0x01	/* we have or don't need correction */
     /* DGPSIP status */
     bool sentdgps;			/* have we sent a DGPS report? */
-    enum { netgnss_none, netgnss_dgpsip, netgnss_ntrip} netgnss_service;	/* type of GNSS service */
+    enum { netgnss_none, netgnss_dgpsip, netgnss_ntrip, netgnss_udp} netgnss_service;	/* type of GNSS service */
     int fixcnt;				/* count of good fixes seen */
     socket_t dsock;			/* socket to DGPSIP server/Ntrip caster */
     void *netgnss_privdata;		/* DGNSS service specific data */

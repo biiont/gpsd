@@ -1140,6 +1140,7 @@ void packet_parse(struct gps_packet_t *lexer)
 		continue;
 	    while (strchr("0123456789ABCDEF", *end))
 		--end;
+#ifdef NMEA_CHECKSUM_ENABLE
 	    if (*end == '*') {
 		unsigned int n, crc = 0;
 		for (n = 1; (char *)lexer->inbuffer + n < end; n++)
@@ -1149,12 +1150,14 @@ void packet_parse(struct gps_packet_t *lexer)
 			       && csum[1] == toupper(end[2]));
 	    }
 	    if (checksum_ok) {
+#endif /* NMEA_CHECKSUM_ENABLE */
 #ifdef AIVDM_ENABLE
 		if (strncmp((char *)lexer->inbuffer, "!AIVDM", 6) == 0)
 		    packet_accept(lexer, AIVDM_PACKET);
 		else
 #endif /* AIVDM_ENABLE */
 		    packet_accept(lexer, NMEA_PACKET);
+#ifdef NMEA_CHECKSUM_ENABLE
 	    } else {
 		gpsd_report(LOG_WARN,
 			    "bad checksum in NMEA packet; expected %s.\n",
@@ -1164,6 +1167,7 @@ void packet_parse(struct gps_packet_t *lexer)
 	    }
 	    packet_discard(lexer);
 	    break;
+#endif /* NMEA_CHECKSUM_ENABLE */
 	}
 #endif /* NMEA_ENABLE */
 #ifdef SIRF_ENABLE

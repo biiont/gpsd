@@ -20,6 +20,7 @@
 
 #define NETGNSS_DGPSIP	"dgpsip://"
 #define NETGNSS_NTRIP	"ntrip://"
+#define NETGNSS_UDP  	"udp://"
 
 /* Where to find the list of DGPSIP correction servers, if there is one */
 #define DGPSIP_SERVER_LIST	"/usr/share/gpsd/dgpsip-servers"
@@ -28,7 +29,8 @@ bool netgnss_uri_check(char *name)
 /* is given string a valid URI for GNSS/DGPS service? */
 {
     return
-	strncmp(name, NETGNSS_NTRIP, strlen(NETGNSS_NTRIP)) == 0
+	strncmp(name, NETGNSS_UDP, strlen(NETGNSS_UDP)) == 0
+	|| strncmp(name, NETGNSS_NTRIP, strlen(NETGNSS_NTRIP)) == 0
 	|| strncmp(name, NETGNSS_DGPSIP, strlen(NETGNSS_DGPSIP)) == 0;
 }
 
@@ -37,6 +39,9 @@ bool netgnss_uri_check(char *name)
 int netgnss_uri_open(struct gps_context_t *context, char *netgnss_service)
 /* open a connection to a DGNSS service */
 {
+    if (strncmp(netgnss_service, NETGNSS_UDP, strlen(NETGNSS_UDP)) == 0)
+	return udp_open(context, netgnss_service + strlen(NETGNSS_UDP));
+
 #ifdef NTRIP_ENABLE
     if (strncmp(netgnss_service, NETGNSS_NTRIP, strlen(NETGNSS_NTRIP)) == 0)
 	return ntrip_open(context, netgnss_service + strlen(NETGNSS_NTRIP));
@@ -85,6 +90,8 @@ void netgnss_report(struct gps_device_t *session)
     else if (session->context->netgnss_service == netgnss_ntrip)
 	ntrip_report(session);
 #endif
+    else if (session->context->netgnss_service == netgnss_udp)
+	udp_report(session);
 }
 
 void netgnss_autoconnect(struct gps_context_t *context, double lat,
